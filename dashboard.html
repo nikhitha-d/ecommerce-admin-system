@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard_E-commerce Admin System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .sidebar {
+            background: #2c3e50;
+            min-height: 100vh;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #ddd;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .sidebar a:hover {
+            background: #1abc9c;
+            color: white;
+            text-decoration: none;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .panel-box {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .bg-users {
+            background: #3498db;
+        }
+
+        .bg-products {
+            background: #27ae60;
+        }
+
+        .bg-orders {
+            background: #f39c12;
+        }
+
+        .bg-revenue {
+            background: #e74c3c;
+        }
+
+        .panel-box h2 {
+            margin: 10px 0;
+            font-size: 32px;
+        }
+
+        .table-section, .notification-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .btn-action {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">E-Commerce Admin</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li>
+                <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-3 col-md-2 sidebar">
+                <h3>Admin Panel</h3>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="users.html">Users</a>
+                <a href="products.html">Products</a>
+                <a href="orders.html">Orders</a>
+                <a href="categories.html">Categories</a>
+                <a href="reports.html">Reports</a>
+                <a href="notifications.html">Notifications</a>
+            </div>
+
+            <div class="col-sm-9 col-md-10 main-content">
+                <h2>Welcome, Admin 👋</h2>
+                <p>Manage your E-commerce system efficiently from this dashboard.</p>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="panel-box bg-users">
+                            <h4>Total Users</h4>
+                            <h2 id="totalUsers">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="panel-box bg-products">
+                            <h4>Total Products</h4>
+                            <h2 id="totalProducts">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="panel-box bg-orders">
+                            <h4>Total Orders</h4>
+                            <h2 id="totalOrders">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="panel-box bg-revenue">
+                            <h4>Revenue</h4>
+                            <h2 id="totalRevenue">₹0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-section">
+                    <h3>Quick Actions</h3>
+                    <button class="btn btn-primary btn-action" onclick="window.location.href='products.html'">Add Product</button>
+                    <button class="btn btn-success btn-action" onclick="window.location.href='users.html'">Add User</button>
+                    <button class="btn btn-warning btn-action" onclick="window.location.href='reports.html'">View Reports</button>
+                </div>
+                <div class="table-section">
+                    <h3>Sales Overview</h3>
+                    <div style="width: 300px; height: 200px;">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+                <div class="table-section">
+                    <h3>Recent Orders</h3>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrders"></tbody>
+                    </table>
+                </div>
+
+                <div class="notification-box">
+                    <h3>Notifications</h3>
+                    <ul id="notificationList"></ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+// LOAD DASHBOARD DATA
+function loadDashboard() {
+    fetch('/get-reports')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("totalUsers").innerText = data.totalUsers;
+            document.getElementById("totalProducts").innerText = data.totalProducts;
+            document.getElementById("totalOrders").innerText = data.totalOrders;
+            document.getElementById("totalRevenue").innerText = "₹" + data.totalRevenue;
+        });
+}
+
+// LOAD RECENT ORDERS
+function loadRecentOrders() {
+    fetch('/get-orders')
+        .then(res => res.json())
+        .then(data => {
+            let table = document.getElementById("recentOrders");
+            table.innerHTML = "";
+
+            let recent = data.slice(-5).reverse(); // last 5 orders
+
+            recent.forEach(o => {
+                table.innerHTML += `
+                    <tr>
+                        <td>#${o.id}</td>
+                        <td>${o.customer_name}</td>
+                        <td>${o.product}</td>
+                        <td>
+                            <span class="label ${
+                                o.order_status === "Delivered" ? "label-success" :
+                                o.order_status === "Shipped" ? "label-info" :
+                                o.order_status === "Cancelled" ? "label-danger" :
+                                "label-warning"
+                            }">
+                                ${o.order_status}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+}
+
+// LOAD NOTIFICATIONS
+function loadNotifications() {
+    fetch('/get-notifications')
+        .then(res => res.json())
+        .then(data => {
+            let list = document.getElementById("notificationList");
+            list.innerHTML = "";
+
+            data.slice(0, 5).forEach(n => {
+                list.innerHTML += `<li>${n.title} - ${n.message}</li>`;
+            });
+        });
+}
+//chart
+function loadChart() {
+    fetch('/get-orders')
+        .then(res => res.json())
+        .then(data => {
+
+            // 🧠 Prepare data (group by product)
+            let productMap = {};
+
+            data.forEach(o => {
+                if (!productMap[o.product]) {
+                    productMap[o.product] = 0;
+                }
+                productMap[o.product] += o.quantity;
+            });
+
+            const labels = Object.keys(productMap);
+            const values = Object.values(productMap);
+
+            const ctx = document.getElementById('salesChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'bar', // 🔥 you can change to 'pie' or 'line'
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Products Sold',
+                        data: values
+                    }]
+                }
+            });
+        });
+}
+
+// 🚀 RUN ALL
+window.onload = function() {
+    loadDashboard();
+    loadRecentOrders();
+    loadNotifications();
+    loadChart(); 
+};
+</script>
+
+</body>
+</html>

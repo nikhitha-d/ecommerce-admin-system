@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders_E-Commerce Admin System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .sidebar {
+            background: #2c3e50;
+            min-height: 100vh;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #ddd;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .sidebar a:hover {
+            background: #1abc9c;
+            color: white;
+            text-decoration: none;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .card-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+        }
+
+        .btn-space {
+            margin-right: 5px;
+        }
+
+        .table > tbody > tr > td {
+            vertical-align: middle;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="dashboard.html">E-Commerce Admin</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li>
+                <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-3 col-md-2 sidebar">
+                <h3>Admin Panel</h3>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="users.html">Users</a>
+                <a href="products.html">Products</a>
+                <a href="orders.html">Orders</a>
+                <a href="categories.html">Categories</a>
+                <a href="reports.html">Reports</a>
+                <a href="notifications.html">Notifications</a>
+            </div>
+
+            <div class="col-sm-9 col-md-10 main-content">
+                <h2 class="page-title">Orders Management</h2>
+
+                <div class="card-box">
+                    <h3>Search Orders</h3>
+                    <form onsubmit="searchOrders(event)">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Search by customer name or order ID" name="search">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-box">
+                    <h3>Order List</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>Order ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Total Amount</th>
+                                    <th>Payment</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody">
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>Rahul</td>
+                                    <td>Smartphone</td>
+                                    <td>1</td>
+                                    <td>₹15,000</td>
+                                    <td><span class="label label-success">Paid</span></td>
+                                    <td><span class="label label-primary">Delivered</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs btn-space">Edit</a>
+                                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1002</td>
+                                    <td>Priya</td>
+                                    <td>Laptop</td>
+                                    <td>1</td>
+                                    <td>₹55,000</td>
+                                    <td><span class="label label-warning">Pending</span></td>
+                                    <td><span class="label label-info">Shipped</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs btn-space">Edit</a>
+                                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1003</td>
+                                    <td>Arjun</td>
+                                    <td>Headphones</td>
+                                    <td>2</td>
+                                    <td>₹5,000</td>
+                                    <td><span class="label label-success">Paid</span></td>
+                                    <td><span class="label label-default">Processing</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs btn-space">Edit</a>
+                                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#1004</td>
+                                    <td>Anjali</td>
+                                    <td>Keyboard</td>
+                                    <td>1</td>
+                                    <td>₹1,200</td>
+                                    <td><span class="label label-success">Paid</span></td>
+                                    <td><span class="label label-danger">Cancelled</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs btn-space">Edit</a>
+                                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+let allOrders = [];
+
+// LOAD ORDERS
+function loadOrders() {
+    fetch('/get-orders')
+        .then(res => res.json())
+        .then(data => {
+            allOrders = data;
+            renderOrders(data);
+        });
+}
+
+// RENDER TABLE
+function renderOrders(data) {
+    let table = document.getElementById("orderTableBody");
+    table.innerHTML = "";
+
+    data.forEach(o => {
+        table.innerHTML += `
+        <tr>
+            <td>#${o.id}</td>
+            <td>${o.customer_name}</td>
+            <td>${o.product}</td>
+            <td>${o.quantity}</td>
+            <td>₹${o.total_amount}</td>
+
+            <td>
+                <span class="label ${o.payment_status === 'Paid' ? 'label-success' : 'label-warning'}">
+                    ${o.payment_status}
+                </span>
+            </td>
+
+            <td>
+                <span class="label ${
+                    o.order_status === 'Delivered' ? 'label-primary' :
+                    o.order_status === 'Cancelled' ? 'label-danger' :
+                    o.order_status === 'Shipped' ? 'label-info' :
+                    'label-default'
+                }">
+                    ${o.order_status}
+                </span>
+            </td>
+
+            <td>
+                <button class="btn btn-danger btn-xs"
+                    onclick="deleteOrder(${o.id})">Delete</button>
+            </td>
+        </tr>
+        `;
+    });
+}
+
+// SEARCH FUNCTION
+function searchOrders(event) {
+    event.preventDefault();
+
+    let searchValue = document.querySelector('input[name="search"]').value;
+
+    if (searchValue.trim() === "") {
+        renderOrders(allOrders);
+        return;
+    }
+
+    fetch(`/search-order?search=${searchValue}`)
+        .then(res => res.json())
+        .then(data => renderOrders(data));
+}
+
+// DELETE
+function deleteOrder(id) {
+    if (confirm("Delete this order?")) {
+        fetch(`/delete-order/${id}`)
+            .then(() => loadOrders());
+    }
+}
+
+// RESET when cleared
+document.querySelector('input[name="search"]').addEventListener("keyup", function() {
+    if (this.value === "") {
+        renderOrders(allOrders);
+    }
+});
+//Order product
+function orderProduct(product, price) {
+    let name = prompt("Enter your name:");
+    let quantity = prompt("Enter quantity:");
+
+    if (!name || !quantity) return;
+
+    let total = price * quantity;
+
+    fetch('/add-order', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            customer_name: name,
+            product: product,
+            quantity: quantity,
+            total_amount: total,
+            payment_status: "Pending",
+            order_status: "Processing"
+        })
+    })
+    .then(res => res.text())
+    .then(msg => {
+        alert("Order placed successfully!");
+    });
+}
+
+
+// LOAD ON START
+window.onload = loadOrders;
+</script>
+
+</body>
+</html>

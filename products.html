@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Products_E-Commerce Admin Sytem</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <style>
+            body{
+                background: #f4f6f9;
+                font-family: Arial,sans-serif;
+            }
+            .navbar{
+                margin-bottom: 0;
+                border-radius: 0;
+            }
+            .sidebar{
+                background: #2c3e50;
+                min-height:100vh;
+                color: white;
+                padding-top: 20px;
+            }
+            .sidebar h3{
+                text-align: center;
+                margin-bottom: 30px;
+                font-weight: bold;
+            }
+            .sidebar a{
+                display:block;
+                color:#ddd;
+                padding:12px 20px;
+                text-decoration: none;
+                font-size: 16px;
+            }
+            .sidebar a:hover{
+                background: #1abc9c;
+                color:white;
+                text-decoration: none;
+            }
+            .main-content{
+                padding:30px;
+            }
+            .card-box{
+                background:white;
+                padding:20px;
+                border-radius: 8px;
+                box-shadow:0px 2px 8px rgba(0,0,0,0.08);
+                margin-bottom: 25px;
+            }
+            .page-title{
+                margin-bottom: 20px;
+            }
+            .btn-space{
+                margin-right: 5px;
+            }
+            .table>tbody>tr>td{
+                vertical-align: middle;
+            }
+            .form-control{
+                margin-bottom: 15px;
+            }
+            .product-img{
+                width:50px;
+                height: 50px;
+                border-radius: 5px;
+                object-fit: cover;
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="dashboard.html">E-commerce Admin</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span>Admin</a></li>
+                    <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <h3>Admin Panel</h3>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="users.html">Users</a>
+                    <a href="products.html">Products</a>
+                    <a href="orders.html">Orders</a>
+                    <a href="categories.html">Categories</a>
+                    <a href="reports.html">Reports</a>
+                    <a href="notifications.html">Notifications</a>
+                </div>
+
+                <div class="col-sm-9 col-md-10 main-content">
+                    <h2 class="page-title">Products Management</h2>
+                    <div class="card-box">
+                        <h3>Add New Product</h3>
+                        <form id="productForm" enctype="multipart/form-data">
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="Product Name" name="product_name" required>
+        </div>
+
+        <!-- CATEGORY DROPDOWN -->
+        <div class="col-md-3">
+            <select class="form-control" name="category_id" id="categoryDropdown" required>
+                <option value="">Select Category</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <input type="number" class="form-control" placeholder="Price" name="price" required>
+        </div>
+
+        <div class="col-md-2">
+            <input type="number" class="form-control" placeholder="Stock" name="stock" required>
+        </div>
+
+        <!-- IMAGE -->
+        <div class="col-md-2">
+            <input type="file" class="form-control" name="product_image" id="productImage" required>
+        </div>
+
+    </div>
+
+    <!-- IMAGE PREVIEW -->
+    <img id="preview" style="width:100px;margin-top:10px;display:none;border-radius:5px;"/>
+
+    <br>
+
+    <button type="submit" class="btn btn-success">Save Product</button>
+</form>
+                    </div>
+
+                    <div class="card-box">
+                        <h3>Search Products</h3>
+                        <form onsubmit="searchProducts(event)">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Search by product name or category" name="search">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card-box">
+                        <h3>Product List</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr class="info">
+                                        <th>ID</th>
+                                        <th>Image</th>
+                                        <th>Product Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="productTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+       <script>
+let allProducts = []; // store all products globally
+
+
+
+function loadProducts(){
+    fetch('/get-products')
+    .then(res => res.json())
+    .then(data => {
+
+        console.log("PRODUCT RESPONSE:", data); // 🔥 debug
+
+        if (!Array.isArray(data)) {
+            console.error("Not array:", data);
+            return; // stop crash
+        }
+
+        allProducts = data;
+        renderTable(data);
+    })
+    .catch(err => console.log(err));
+}
+function loadCategoriesDropdown() {
+    fetch('/get-categories')
+        .then(res => res.json())
+        .then(data => {
+
+            console.log("CATEGORIES:", data); // 👈 ADD THIS
+
+            let dropdown = document.getElementById("categoryDropdown");
+
+            dropdown.innerHTML = '<option value="">Select Category</option>';
+
+            data.forEach(c => {
+                dropdown.innerHTML += `
+                    <option value="${c.id}">
+                        ${c.category_name}
+                    </option>
+                `;
+            });
+        })
+        .catch(err => console.log("ERROR:", err));
+}
+
+// render table function
+function renderTable(data) {
+    let table = document.getElementById("productTableBody");
+    table.innerHTML = "";
+
+    data.forEach(p => {
+        table.innerHTML += `
+            <tr>
+                <td>${p.id}</td>c
+
+                <td>
+                    ${p.image 
+                        ? `<img src="/uploads/${p.image}" class="product-img">`
+                        : 'No Image'}
+                </td>
+                <td>${p.product_name}</td>
+
+                <td>${p.category_name}</td>
+
+                <td>₹${p.price}</td>
+
+
+                <td>${p.stock}</td>
+
+                <td>
+                    ${p.stock > 0 
+                        ? '<span class="label label-success">In Stock</span>' 
+                        : '<span class="label label-danger">Out of Stock</span>'}
+                </td>
+
+                <td>
+                    <button class="btn btn-warning btn-xs btn-space"
+                        onclick="editProduct(${p.id}, '${p.product_name}', '${p.category_id}', ${p.price}, ${p.stock})">
+                        Edit
+                    </button>
+
+                    <button class="btn btn-danger btn-xs"
+                        onclick="deleteProduct(${p.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+// RESET SEARCH when input is cleared
+document.querySelector('input[name="search"]').addEventListener("keyup", function() {
+    if (this.value === "") {
+        renderTable(allProducts);
+    }
+});
+
+
+//search product
+function searchProducts(event) {
+    event.preventDefault(); // 🚫 stop page reload
+
+    let searchValue = document.querySelector('input[name="search"]').value;
+
+    if (searchValue.trim() === "") {
+    renderTable(allProducts);
+    return;
+}
+
+    fetch(`/search-product?search=${searchValue}`)
+        .then(res => res.json())
+        .then(data => {
+            renderTable(data); // ✅ show searched data in table
+        })
+        .catch(err => console.log(err));
+}
+
+// EDIT PRODUCT
+function editProduct(id, name, category, price, stock) {
+    let newName = prompt("Edit Product Name:", name);
+    let newCategory = prompt("Edit Category ID:", category);
+    let newPrice = prompt("Edit Price:", price);
+    let newStock = prompt("Edit Stock:", stock);
+
+    if (newName && newCategory && newPrice && newStock) {
+        fetch(`/update-product/${id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                product_name: newName,
+                category_id: newCategory,
+                price: newPrice,
+                stock: newStock
+            })
+        })
+        .then(res => res.json())
+        .then(() => {
+            alert("Product updated successfully");
+            loadProducts();
+        });
+    }
+}
+
+// DELETE PRODUCT
+function deleteProduct(id) {
+    if (confirm("Delete this product?")) {
+        fetch(`/delete-product/${id}`)
+            .then(() => loadProducts());
+    }
+}
+//image
+
+document.getElementById("productImage").addEventListener("change", function(event) {
+    let reader = new FileReader();
+
+    reader.onload = function() {
+        let preview = document.getElementById("preview");
+        preview.src = reader.result;
+        preview.style.display = "block";
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
+});
+
+document.getElementById("productForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // 🚫 stop page reload
+
+    const formData = new FormData(this);
+
+    fetch('/add-product', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+
+        loadProducts(); // 🔥 THIS is what updates table instantly
+        document.getElementById("productForm").reset();
+
+        // hide preview
+        document.getElementById("preview").style.display = "none";
+    })
+    .catch(err => console.log(err));
+});
+
+window.onload = function() {
+    loadCategoriesDropdown();
+    loadProducts();
+};
+</script>
+    </body>
+</html>

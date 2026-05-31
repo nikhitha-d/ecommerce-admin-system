@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports_E-Commerce Admin System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .sidebar {
+            background: #2c3e50;
+            min-height: 100vh;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #ddd;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .sidebar a:hover {
+            background: #1abc9c;
+            color: white;
+            text-decoration: none;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .card-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+        }
+
+        .report-box {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .bg-users {
+            background: #3498db;
+        }
+
+        .bg-products {
+            background: #27ae60;
+        }
+
+        .bg-orders {
+            background: #f39c12;
+        }
+
+        .bg-revenue {
+            background: #e74c3c;
+        }
+
+        .report-box h2 {
+            margin: 10px 0;
+            font-size: 32px;
+        }
+
+        .table > tbody > tr > td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="dashboard.html">E-Commerce Admin</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li>
+                <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <h3>Admin Panel</h3>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="users.html">Users</a>
+                <a href="products.html">Products</a>
+                <a href="orders.html">Orders</a>
+                <a href="categories.html">Categories</a>
+                <a href="reports.html">Reports</a>
+                <a href="notifications.html">Notifications</a>
+            </div>
+
+            <div class="col-sm-9 col-md-10 main-content">
+                <h2 class="page-title">Reports & Analytics</h2>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="report-box bg-users">
+                            <h4>Total Users</h4>
+                            <h2 id="totalUsers">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="report-box bg-products">
+                            <h4>Total Products</h4>
+                            <h2 id="totalProducts">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="report-box bg-orders">
+                            <h4>Total Orders</h4>
+                            <h2 id="totalOrders">0</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="report-box bg-revenue">
+                            <h4>Total Revenue</h4>
+                            <h2 id="totalRevenue">₹0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-box">
+                    <h3>Sales Summary</h3>
+                    <p><strong>Today Sales:</strong> ₹<span id="todaySales">0</span></p>
+                    <p><strong>This Week Sales:</strong> ₹<span id="weekSales">0</span></p>
+                    <p><strong>This Month Sales:</strong> ₹<span id="monthSales">0</span></p>
+                    <p><strong>Most Sold Product:</strong> <span id="topProduct">-</span></p>
+                    <p><strong>Top Category:</strong> <span id="topCategory">-</span></p>
+                </div>
+
+                <div class="card-box">
+                    <h3>Recent Reports</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>Report ID</th>
+                                    <th>Report Name</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>Daily Sales Report</td>
+                                    <td>02-04-2026</td>
+                                    <td><span class="label label-success">Generated</span></td>
+                                </tr>
+                                <tr>
+                                    <td>R002</td>
+                                    <td>Weekly Orders Report</td>
+                                    <td>01-04-2026</td>
+                                    <td><span class="label label-success">Generated</span></td>
+                                </tr>
+                                <tr>
+                                    <td>R003</td>
+                                    <td>Monthly Revenue Report</td>
+                                    <td>30-03-2026</td>
+                                    <td><span class="label label-warning">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>R004</td>
+                                    <td>Customer Activity Report</td>
+                                    <td>28-03-2026</td>
+                                    <td><span class="label label-success">Generated</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+function loadReports() {
+    fetch('/get-reports')
+        .then(res => res.json())
+        .then(data => {
+
+            document.getElementById("totalUsers").innerText = data.totalUsers;
+            document.getElementById("totalProducts").innerText = data.totalProducts;
+            document.getElementById("totalOrders").innerText = data.totalOrders;
+            document.getElementById("totalRevenue").innerText = "₹" + data.totalRevenue;
+
+            document.getElementById("todaySales").innerText = data.todaySales;
+            document.getElementById("weekSales").innerText = data.weekSales;
+            document.getElementById("monthSales").innerText = data.monthSales;
+
+            document.getElementById("topProduct").innerText = data.topProduct;
+            document.getElementById("topCategory").innerText = data.topCategory;
+
+        })
+        .catch(err => console.log(err));
+}
+
+window.onload = loadReports;
+</script>
+
+</body>
+</html>

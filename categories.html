@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Categories_E-Commerce Admin System</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .navbar{
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .sidebar{
+            background: #2c3e50;
+            min-height: 100vh;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar h3{
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .sidebar a{
+            display: block;
+            color: #ddd;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .sidebar a:hover{
+            background: #1abc9c;
+            color: white;
+            text-decoration: none;
+        }
+
+        .main-content{
+            padding: 30px;
+        }
+
+        .card-box{
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .page-title{
+            margin-bottom: 20px;
+        }
+
+        .btn-space{
+            margin-right: 5px;
+        }
+
+        .table>tbody>tr>td{
+            vertical-align: middle;
+        }
+
+        .form-control{
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="dashboard.html">E-Commerce Admin</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li>
+                <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <h3>Admin Panel</h3>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="users.html">Users</a>
+                <a href="products.html">Products</a>
+                <a href="orders.html">Orders</a>
+                <a href="categories.html">Categories</a>
+                <a href="reports.html">Reports</a>
+                <a href="notifications.html">Notifications</a>
+            </div>
+
+            <div class="col-sm-9 col-md-10 main-content">
+                <h2 class="page-title">Categories Management</h2>
+                <div class="card-box">
+                    <h3>Add New Category</h3>
+                    <form action="/add-category" method="post">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="Category Name" name="category_name">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Category Description" name="category_description">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success">Save Category</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-box">
+                    <h3>Search Categories</h3>
+                    <form onsubmit="searchCategory(event)">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Search by category name" name="search">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-box">
+                    <h3>Category List</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>ID</th>
+                                    <th>Category Name</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoryTableBody">
+                                <tr>
+                                    <td>1</td>
+                                    <td>Electronics</td>
+                                    <td>Mobiles, laptops, gadgets and devices</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs btn-space">Edit</a>
+                                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Accessories</td>
+                                    <td>Headphones, keyboards, mouse and other accessories</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs btn-space">Edit</a>
+                                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Fashion</td>
+                                    <td>Clothing, shoes and fashion products</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs btn-space">Edit</a>
+                                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Beauty</td>
+                                    <td>Cosmetics, skincare and beauty items</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-xs btn-space">Edit</a>
+                                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+let allCategories = [];
+
+// LOAD
+function loadCategories() {
+    fetch('/get-categories')
+        .then(res => res.json())
+        .then(data => {
+            allCategories = data;
+            renderCategories(data);
+        });
+}
+
+// RENDER
+function renderCategories(data) {
+    let table = document.getElementById("categoryTableBody");
+    table.innerHTML = "";
+
+    data.forEach(c => {
+        table.innerHTML += `
+        <tr>
+            <td>${c.id}</td>
+            <td>${c.category_name}</td>
+            <td>${c.category_description || ''}</td>
+            <td>
+                <button class="btn btn-primary btn-xs btn-space"
+                    onclick="editCategory(${c.id}, '${c.category_name}', '${c.category_description || ''}')">
+                    Edit
+                </button>
+
+                <button class="btn btn-danger btn-xs"
+                    onclick="deleteCategory(${c.id})">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+}
+
+// SEARCH
+function searchCategory(event) {
+    event.preventDefault();
+
+    let searchValue = document.querySelector('input[name="search"]').value;
+
+    if (searchValue.trim() === "") {
+        renderCategories(allCategories);
+        return;
+    }
+
+    fetch(`/search-category?search=${searchValue}`)
+        .then(res => res.json())
+        .then(data => renderCategories(data));
+}
+
+// DELETE
+function deleteCategory(id) {
+    if (confirm("Delete this category?")) {
+        fetch(`/delete-category/${id}`)
+            .then(() => loadCategories());
+    }
+}
+
+// EDIT
+function editCategory(id, name, desc) {
+    let newName = prompt("Edit category name:", name);
+    let newDesc = prompt("Edit description:", desc);
+
+    if (newName) {
+        fetch(`/update-category/${id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                category_name: newName,
+                category_description: newDesc
+            })
+        })
+        .then(() => {
+            alert("Updated successfully");
+            loadCategories();
+        });
+    }
+}
+
+// RESET
+document.querySelector('input[name="search"]').addEventListener("keyup", function() {
+    if (this.value === "") {
+        renderCategories(allCategories);
+    }
+});
+
+// LOAD ON START
+window.onload = loadCategories;
+</script>
+
+</body>
+</html>
